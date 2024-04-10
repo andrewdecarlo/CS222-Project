@@ -6,6 +6,14 @@ window.title("Workflow Homepage.")
 window.geometry('900x600')
 window.tk.call('tk', 'scaling', 3.0)
 
+
+window2 = Tk()
+window2.title("Test")
+window2.geometry('20x50')
+window2.tk.call('tk', 'scaling', 1.5)
+
+
+
 #adding stuff
 lbl = Label(window, text="Enter your diagram name.")
 lbl.grid(column = 0, row=0)
@@ -22,7 +30,7 @@ btnCancel.grid(column=1, row=2)
 
 
 window.mainloop()
-
+window2.mainloop()
 
 
 
