@@ -1,4 +1,3 @@
-#Main method
 import tkinter as tk
 
 class Node:

@@ -1,21 +1,11 @@
-
-
-
 import tkinter as tk
-import tkinter.ttk as ttk
 
-
-
+#Create Main Window
 root = tk.Tk()
-
-
 root.title("Main Menu")
 
 #Change background
 root.config(bg="black")
-
-
-
 
 #Create Menu labels/buttons and configure colors
 newProjectLabel = tk.Label(root, text="Create New Project")
@@ -32,7 +22,7 @@ authorLabel.config(bg="black")
 authorLabel.config(fg="white")
 authorInput = tk.Entry(root)
 
-createButton = tk.Button(root, text="Create", HomePageStart(authorInput.get(), titleInput.get()) )
+createButton = tk.Button(root, text="Create")
 
 whitespace = tk.Label(root, text="")
 whitespace.config(bg="black")
@@ -53,15 +43,4 @@ openButton = tk.Button(root, text="Browse")
 openExistingLabel.grid(row=6, column=0)
 openButton.grid(row=7, column=0)
 
-
-home = HomePageStart(titleInput.get(), authorInput.get())
-
-print("1")
 root.mainloop()
-
-
-
-
-
-
-
