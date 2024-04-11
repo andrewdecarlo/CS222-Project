@@ -1,10 +1,28 @@
 import tkinter as tk
 
-def getEntryFields(root, title, author, list):
-    list.clear()
-    list.append(title)
-    list.append(author)
-    root.destroy()
+def checkColor(color):
+    try:
+        temp = tk.Tk()
+        temp.config(bg=color)
+        temp.destroy()
+    except:
+        temp.destroy()
+        return 0
+        
+    return 1
+
+def getEntryFields(root, title, author, list, color):
+    if(title != "" and author != "" and color != ""):
+        if(checkColor(color) == 1):
+            list.clear()
+            list.append(title)
+            list.append(author)
+            list.append(color)
+            root.destroy()
+        else:
+            print("Uknown Color Error")
+    else:
+        print("System Empty Field Error")
 
 
 def homePage():
@@ -37,7 +55,12 @@ def homePage():
     authorLabel.config(fg="white")
     authorInput = tk.Entry(root)
     
-    createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData))
+    colorLabel = tk.Label(root, text="Color Theme")
+    colorLabel.config(bg="black")
+    colorLabel.config(fg="white")
+    colorInput = tk.Entry(root)
+
+    createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorInput.get()))
 
     whitespace = tk.Label(root, text="")
     whitespace.config(bg="black")
@@ -47,8 +70,10 @@ def homePage():
     titleInput.grid(row=2, column=1)
     authorLabel.grid(row=3, column=0)
     authorInput.grid(row=3, column=1)
-    createButton.grid(row=4, column=0)
-    whitespace.grid(row=5, column=0)
+    colorLabel.grid(row=4, column=0)
+    colorInput.grid(row=4, column=1)
+    createButton.grid(row=5, column=0)
+    whitespace.grid(row=6, column=0)
 
     openExistingLabel = tk.Label(root, text="Open Existing Proejct")
     openExistingLabel.config(bg="black")
@@ -106,12 +131,12 @@ class Node:
         self.drag_data = None
 
 class App:
-    def __init__(self, root, title, name):
+    def __init__(self, root, title, name, color):
         self.root = root
         self.root.title(title)
         self.author = name
 
-        self.canvas = tk.Canvas(root, width=600, height=400, bg="white")
+        self.canvas = tk.Canvas(root, width=600, height=400, bg=color)
         self.canvas.pack()
 
         self.nodes = []
@@ -139,7 +164,7 @@ class App:
 
         self.canvas.bind("<Button-1>", self.click_node)
         self.canvas.bind("<Button-3>", self.delete_object)
-        self.name_entry.bind("<Return>", lambda event: self.add_node())
+        self.name_entry.bind("<Return>", lambda event: self.add_node)
 
         
         
@@ -147,18 +172,21 @@ class App:
     
 
     def add_node(self):
-        name = self.name_entry.get()
-        description = self.description_entry.get()
-        time = self.time_entry.get()
-        cost = self.cost_entry.get()
-        node = Node(self.canvas, 100, 100, name, description, time, cost)
-        self.nodes.append(node)
+        if(self.time_entry.get() != "" and self.name_entry.get() != "" and self.cost_entry.get() != "" and  self.description_entry.get() != ""):
+            name = self.name_entry.get()
+            description = self.description_entry.get()
+            time = self.time_entry.get()
+            cost = self.cost_entry.get()
+            node = Node(self.canvas, 100, 100, name, description, time, cost)
+            self.nodes.append(node)
 
-        # Clear entry fields
-        self.name_entry.delete(0, tk.END)
-        self.description_entry.delete(0, tk.END)
-        self.time_entry.delete(0, tk.END)
-        self.cost_entry.delete(0, tk.END)
+            # Clear entry fields
+            self.name_entry.delete(0, tk.END)
+            self.description_entry.delete(0, tk.END)
+            self.time_entry.delete(0, tk.END)
+            self.cost_entry.delete(0, tk.END)
+        else:
+            print("System Empty Field Error")
 
     def click_node(self, event):
         closest = self.canvas.find_closest(event.x, event.y)
@@ -197,7 +225,7 @@ class App:
     
 
 x = homePage()
-p#rint("The value of x is " , x)
+#print("The value of x is " , x)
 root = tk.Tk()
-app = App(root, x[0],x[1])
+app = App(root, x[0],x[1],x[2])
 root.mainloop()
