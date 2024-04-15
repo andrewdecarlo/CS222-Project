@@ -46,14 +46,10 @@ def homePage():
    
     root = tk.Tk()
     
-
     root.title("Main Menu")
 
     #Change background
     root.config(bg="black")
-
-
-
 
     #Create Menu labels/buttons and configure colors
     newProjectLabel = tk.Label(root, text="Create New Project")
@@ -162,22 +158,42 @@ class App:
         self.end_node = None
 
         # Labels and Entry fields
-        tk.Label(root, text="Name:").pack()
+        nameLabel = tk.Label(root, text="Name:")
+        nameLabel.pack()
+        nameLabel.place(x=0, y=425)
+        root.update()
+
+        descLabel = tk.Label(root, text="Description:")
+        descLabel.place(x=0, y=(nameLabel.winfo_y() + nameLabel.winfo_height() + 5))
+        root.update()
+
+        timeLabel = tk.Label(root, text="Time:")
+        timeLabel.place(x=0, y=(descLabel.winfo_y() + descLabel.winfo_height() + 5))
+        root.update()
+
+        costLabel = tk.Label(root, text="Cost:")
+        costLabel.place(x=0, y=(timeLabel.winfo_y() + timeLabel.winfo_height() + 5))
+        root.update()
+
         self.name_entry = tk.Entry(root, width=20)
-        self.name_entry.pack()
-        tk.Label(root, text="Description:").pack()
+        self.name_entry.place(x=(nameLabel.winfo_x() + descLabel.winfo_reqwidth()), y=nameLabel.winfo_y())
+        root.update()
+
         self.description_entry = tk.Entry(root, width=20)
-        self.description_entry.pack()
-        tk.Label(root, text="Time:").pack()
+        self.description_entry.place(x=(descLabel.winfo_x() + descLabel.winfo_width()), y=descLabel.winfo_y())
+        
         self.time_entry = tk.Entry(root, width=20)
-        self.time_entry.pack()
-        tk.Label(root, text="Cost:").pack()
+        self.time_entry.place(x=(timeLabel.winfo_x() + descLabel.winfo_width()), y=timeLabel.winfo_y())
+        
         self.cost_entry = tk.Entry(root, width=20)
-        self.cost_entry.pack()
+        self.cost_entry.place(x=(costLabel.winfo_x() + descLabel.winfo_width()), y=costLabel.winfo_y())
 
         # Buttons
         self.add_node_button = tk.Button(root, text="Add Node", command=self.add_node)
-        self.add_node_button.pack()
+        self.add_node_button.place(x=75, y=(costLabel.winfo_y() + costLabel.winfo_height() + 5))
+
+        window_height = nameLabel.winfo_y() + descLabel.winfo_reqheight() + timeLabel.winfo_reqheight() + costLabel.winfo_reqheight() + self.add_node_button.winfo_reqheight() + 50
+        root.geometry(f"600x{window_height}")
 
         self.canvas.bind("<Button-1>", self.click_node)
         self.canvas.bind("<Button-3>", self.delete_object)
@@ -265,6 +281,7 @@ class Driver:
 
 
 x = homePage()
+#print("The value of x is " , x)
 
 #print("The value of x is " , x)
 root = tk.Tk()
