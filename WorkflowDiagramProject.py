@@ -1,10 +1,21 @@
 import tkinter as tk
+from tkinter import *
+
+
+
+
 
 def checkColor(color):
+ 
+
     try:
-        temp = tk.Tk()
-        temp.config(bg=color)
-        temp.destroy()
+        if(color == "1"):
+            x = Driver()
+            return 0
+        else:
+            temp = tk.Tk()
+            temp.config(bg=color)
+            temp.destroy()
     except:
         temp.destroy()
         return 0
@@ -12,7 +23,12 @@ def checkColor(color):
     return 1
 
 def getEntryFields(root, title, author, list, color):
+    
+    
+
     if(title != "" and author != "" and color != ""):
+       
+
         if(checkColor(color) == 1):
             list.clear()
             list.append(title)
@@ -83,7 +99,8 @@ def homePage():
     openExistingLabel.grid(row=6, column=0)
     openButton.grid(row=7, column=0)
 
-
+    #Opening the debug screen 
+    
 
 
     entryData.append(titleInput.get())
@@ -222,9 +239,33 @@ class App:
         if "node_text" in self.canvas.gettags(closest):
             self.canvas.delete(closest)
 
-    
+class Driver:
+    def __init__(self):
+        print("Start Unit Testing")
+
+        #creating the platform for debug screen.
+        self.testScreen = tk.Tk()
+        self.testScreen.title("Driver")
+        self.testScreen.geometry('300x300')
+        self.testScreen.tk.call('tk', 'scaling', 2)
+        self.testScreen.title("Unit Class Testing")
+
+        #Debug Buttons for testing classes
+        self.buttonNodeClass = Button(self.testScreen, text="Node Class")
+        self.buttonNodeClass.grid(column=0, row=0)
+        
+        self.buttonAppClass = Button(self.testScreen, text="App Class  ")
+        self.buttonAppClass.grid(column=0, row=1)
+        
+        self.testScreen.mainloop()
+
+
+
+
+
 
 x = homePage()
+
 #print("The value of x is " , x)
 root = tk.Tk()
 app = App(root, x[0],x[1],x[2])
