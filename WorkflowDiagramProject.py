@@ -73,6 +73,7 @@ def homePage():
     colorInput = tk.Entry(root)
 
     createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorInput.get()))
+    driverButton = tk.Button(root, text="Driver", command= lambda: Driver())
 
     whitespace = tk.Label(root, text="")
     whitespace.config(bg="black")
@@ -85,7 +86,9 @@ def homePage():
     colorLabel.grid(row=4, column=0)
     colorInput.grid(row=4, column=1)
     createButton.grid(row=5, column=0)
+    driverButton.grid(row=5, column=1)
     whitespace.grid(row=6, column=0)
+
 
     openExistingLabel = tk.Label(root, text="Open Existing Proejct")
     openExistingLabel.config(bg="black")
@@ -279,7 +282,6 @@ class Driver:
 x = homePage()
 #print("The value of x is " , x)
 
-#print("The value of x is " , x)
 root = tk.Tk()
 app = App(root, x[0],x[1],x[2])
 root.mainloop()
