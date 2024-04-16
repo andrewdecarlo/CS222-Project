@@ -32,9 +32,10 @@ class Node:
         self.drag_data = None
 
 class App:
-    def __init__(self, root):
+    def __init__(self, root, title, author):
         self.root = root
-        self.root.title("Work Flow")
+        self.root.title(title)
+        self.author = author
 
         self.canvas = tk.Canvas(root, width=600, height=400, bg="white")
         self.canvas.pack()
@@ -63,7 +64,9 @@ class App:
         self.add_node_button.pack()
 
         self.canvas.bind("<Button-1>", self.click_node)
-        self.canvas.bind("<Button-3>", self.delete_line)
+        self.canvas.bind("<Button-3>", self.delete_object)
+        self.name_entry.bind("<Return>", lambda event: self.add_node())
+
 
     def add_node(self):
         name = self.name_entry.get()
@@ -100,12 +103,19 @@ class App:
         self.start_node = None
         self.end_node = None
 
-    def delete_line(self, event):
+    def delete_object(self, event):
         closest = self.canvas.find_closest(event.x, event.y)
         if "line" in self.canvas.gettags(closest):
             self.canvas.delete(closest)
             self.lines.remove(closest)
+        if "node" in self.canvas.gettags(closest):
+            self.canvas.delete(closest)
+            self.nodes.remove(closest)
+        if "node_text" in self.canvas.gettags(closest):
+            self.canvas.delete(closest)
+           
 
 root = tk.Tk()
-app = App(root)
+menu = tk.Tk()
+app = App(root, "Work Flow", "Author")
 root.mainloop()
