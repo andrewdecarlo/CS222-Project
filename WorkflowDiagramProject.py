@@ -276,10 +276,6 @@ class Driver:
         self.testScreen.mainloop()
 
 
-
-
-
-
 x = homePage()
 #print("The value of x is " , x)
 
