@@ -260,8 +260,8 @@ class App:
 
 class Driver:
     def __init__(self):
-        print("Start Unit Testing")
-
+        print("Start Driver Class")
+        print("Acess the information from the command prompt")
         #creating the platform for debug screen.
         self.testScreen = tk.Tk()
         self.testScreen.title("Driver")
