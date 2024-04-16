@@ -1,16 +1,42 @@
 import tkinter as tk
 from tkinter import *
 
+
+
+
+
+def checkColor(color):
+ 
+
+    try:
+        if(color == "1"):
+            x = Driver()
+            return 0
+        else:
+            temp = tk.Tk()
+            temp.config(bg=color)
+            temp.destroy()
+    except:
+        temp.destroy()
+        return 0
+        
+    return 1
+
 def getEntryFields(root, title, author, list, color):
     
     
 
     if(title != "" and author != "" and color != ""):
+       
+
+        if(checkColor(color) == 1):
             list.clear()
             list.append(title)
             list.append(author)
             list.append(color)
             root.destroy()
+        else:
+            print("Uknown Color Error")
     else:
         print("System Empty Field Error")
 
@@ -49,7 +75,7 @@ def homePage():
     options = ["White", "Black", "Red", "Green", "Blue"]
     colorInput = tk.OptionMenu(root, colorSelection, *options)
 
-    createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorSelection.get()))
+    createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorInput.get()))
     driverButton = tk.Button(root, text="Driver", command= lambda: Driver())
 
     whitespace = tk.Label(root, text="")
@@ -242,13 +268,31 @@ class Driver:
         #creating the platform for debug screen.
         self.testScreen = tk.Tk()
         self.testScreen.title("Driver")
-        self.testScreen.geometry('300x300')
+        self.testScreen.geometry('3000x300')
         self.testScreen.tk.call('tk', 'scaling', 2)
         self.testScreen.title("Unit Class Testing")
 
         #Debug Buttons for testing classes
         self.buttonNodeClass = Button(self.testScreen, text="Node Class")
         self.buttonNodeClass.grid(column=0, row=0)
+
+        #canvas, x, y, name, description, time, cost
+
+        self.x_entry = tk.Entry(root)
+        self.x_entry.grid(column=1, row=0)
+
+        self.y_entry = tk.Entry(root, width=20)
+        self.y_entry.grid(columr=2, row=0)
+
+        self.name_entry = tk.Entry(root, width=20)
+        self.name_entry.grid(column=3, row=0)
+
+        self.description_entry = tk.Entry(root, width=20)
+        self.description_entry.grid(column=4,row=0)
+        
+        self.time_entry = tk.Entry(root, width=20)
+        self.time_entry.grid(column=5, row=0)
+
         
         self.buttonAppClass = Button(self.testScreen, text="App Class  ")
         self.buttonAppClass.grid(column=0, row=1)
