@@ -52,7 +52,7 @@ def homePage():
     root.config(bg="black")
 
     #Create Menu labels/buttons and configure colors
-    newProjectLabel = tk.Label(root, text="Create New Project")
+    newProjectLabel = tk.Label(root, text="Create New Project:")
     newProjectLabel.config(bg="black")
     newProjectLabel.config(fg="white")
 
@@ -81,15 +81,15 @@ def homePage():
     whitespace = tk.Label(root, text="")
     whitespace.config(bg="black")
 
-    newProjectLabel.grid(row=1, column=0)
+    newProjectLabel.grid(row=1, column=0, pady=5)
     titleLabel.grid(row=2, column=0)
     titleInput.grid(row=2, column=1)
     authorLabel.grid(row=3, column=0)
-    authorInput.grid(row=3, column=1)
+    authorInput.grid(row=3, column=1, pady=5, padx=10)
     colorLabel.grid(row=4, column=0)
-    colorInput.grid(row=4, column=1)
+    colorInput.grid(row=4, column=1, pady=5)
     createButton.grid(row=5, column=0)
-    driverButton.grid(row=5, column=1)
+    driverButton.grid(row=5, column=1, pady=5)
     whitespace.grid(row=6, column=0)
 
 
@@ -98,8 +98,8 @@ def homePage():
     openExistingLabel.config(fg="white")
 
     openButton = tk.Button(root, text="Browse")
-    openExistingLabel.grid(row=6, column=0)
-    openButton.grid(row=7, column=0)
+    openExistingLabel.grid(row=6, column=0, padx=10)
+    openButton.grid(row=6, column=1, pady=10)
 
     #Opening the debug screen 
     
@@ -301,8 +301,8 @@ class Driver:
 
 
 x = homePage()
-#print("The value of x is " , x)
 
-root = tk.Tk()
-app = App(root, x[0],x[1],x[2])
-root.mainloop()
+if len(x) > 2:
+    root = tk.Tk()
+    app = App(root, x[0],x[1],x[2])
+    root.mainloop()
