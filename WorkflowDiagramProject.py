@@ -1,46 +1,6 @@
 import tkinter as tk
 from tkinter import *
 
-
-
-
-
-def checkColor(color):
- 
-
-    try:
-        if(color == "1"):
-            x = Driver()
-            return 0
-        else:
-            temp = tk.Tk()
-            temp.config(bg=color)
-            temp.destroy()
-    except:
-        temp.destroy()
-        return 0
-        
-    return 1
-
-def getEntryFields(root, title, author, list, color):
-    
-    
-
-    if(title != "" and author != "" and color != ""):
-       
-
-        if(checkColor(color) == 1):
-            list.clear()
-            list.append(title)
-            list.append(author)
-            list.append(color)
-            root.destroy()
-        else:
-            print("Uknown Color Error")
-    else:
-        print("System Empty Field Error")
-
-
 def homePage():
     entryData = []
    
@@ -75,7 +35,7 @@ def homePage():
     options = ["White", "Black", "Red", "Green", "Blue"]
     colorInput = tk.OptionMenu(root, colorSelection, *options)
 
-    createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorInput.get()))
+    createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorSelection.get()))
     driverButton = tk.Button(root, text="Driver", command= lambda: Driver())
 
     whitespace = tk.Label(root, text="")
@@ -101,10 +61,26 @@ def homePage():
     openExistingLabel.grid(row=6, column=0, padx=10)
     openButton.grid(row=6, column=1, pady=10)
 
-    #Opening the debug screen 
+    def getEntryFields(root, title, author, list, color):
     
+        if(title != "" and author != "" and color != ""):
+                list.clear()
+                list.append(title)
+                list.append(author)
+                list.append(color)
+                root.destroy()
+        else:
+            if not title:
+                titleInput.configure(bg="red")
+            else:
+                titleInput.configure(bg="white")
+            if not author:
+                authorInput.configure(bg="red")
+            else:
+                authorInput.configure(bg="white")
+            print("System Empty Field Error")
 
-
+    #Opening the debug screen 
     entryData.append(titleInput.get())
     entryData.append(authorInput.get())
    
