@@ -1,26 +1,6 @@
 import tkinter as tk
 from tkinter import *
 
-
-
-
-
-
-
-def getEntryFields(root, title, author, list, color):
-    
-    
-
-    if(title != "" and author != "" and color != ""):
-            list.clear()
-            list.append(title)
-            list.append(author)
-            list.append(color)
-            root.destroy()
-    else:
-        print("System Empty Field Error")
-
-
 def homePage():
     entryData = []
    
@@ -81,10 +61,26 @@ def homePage():
     openExistingLabel.grid(row=6, column=0, padx=10)
     openButton.grid(row=6, column=1, pady=10)
 
-    #Opening the debug screen 
+    def getEntryFields(root, title, author, list, color):
     
+        if(title != "" and author != "" and color != ""):
+                list.clear()
+                list.append(title)
+                list.append(author)
+                list.append(color)
+                root.destroy()
+        else:
+            if not title:
+                titleInput.configure(bg="red")
+            else:
+                titleInput.configure(bg="white")
+            if not author:
+                authorInput.configure(bg="red")
+            else:
+                authorInput.configure(bg="white")
+            print("System Empty Field Error")
 
-
+    #Opening the debug screen 
     entryData.append(titleInput.get())
     entryData.append(authorInput.get())
    
