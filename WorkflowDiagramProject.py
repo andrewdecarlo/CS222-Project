@@ -240,7 +240,6 @@ class App:
             self.lines.remove(closest)
 
         if self.nodes.get(self.canvas.gettags(closest)[0]):
-            print("here")
             self.canvas.delete(closest)
             del self.nodes[self.canvas.gettags(closest)[0]]
 
