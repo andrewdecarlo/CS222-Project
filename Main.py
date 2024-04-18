@@ -106,6 +106,7 @@ class Node:
         self.time = time
         self.cost = cost
         self.text_id = canvas.create_text(x, y, text=name, tags="node_text")
+        Node.node_counter += 1
 
         self.canvas.tag_bind(self.id, "<ButtonPress-1>", self.start_drag)
         self.canvas.tag_bind(self.id, "<B1-Motion>", self.drag)
@@ -211,7 +212,7 @@ class App:
 
     def click_node(self, event):
         closest = self.canvas.find_closest(event.x, event.y)
-        tag = self.canvas.gettags(closest)[0]     
+        tag = self.canvas.gettags(closest)[0]  
         if self.nodes.get(tag) is not None:
             node = self.nodes[tag]
             self.display_details(node)
@@ -239,9 +240,9 @@ class App:
             self.canvas.delete(closest)
             self.lines.remove(closest)
 
-        if self.nodes.get(self.canvas.gettags(closest)[0]):
+        if "node" in self.canvas.gettags(closest):
             self.canvas.delete(closest)
-            del self.nodes[self.canvas.gettags(closest)[0]]
+            self.nodes.remove(closest)
 
         if "node_text" in self.canvas.gettags(closest):
             self.canvas.delete(closest)
@@ -267,9 +268,6 @@ class Driver:
     def __init__(self):
         print("Start Driver Class")
         print("Acess the information from the command prompt")
-
-        print("For node class use [x-position, y-position, name, description, time, cost]")
-        print("For App class use title, name, color")
         #creating the platform for debug screen.
         self.testScreen = tk.Tk()
         self.testScreen.title("Driver")
@@ -278,60 +276,31 @@ class Driver:
         self.testScreen.title("Unit Class Testing")
 
         #Debug Buttons for testing classes
-        self.buttonNodeClass = Button(self.testScreen, text="Node Class", command= lambda: self.nodePush(self.x_entry.get(), self.y_entry.get(), self.name_entry.get(), self.description_entry.get(), self.time_entry.get(), self.cost_entry.get()))
+        self.buttonNodeClass = Button(self.testScreen, text="Node Class")
         self.buttonNodeClass.grid(column=0, row=0)
 
         #canvas, x, y, name, description, time, cost
 
-        
-        self.buttonAppClass = Button(self.testScreen, text="App Class  ", command= lambda: self.appPush(self.title_entry.get(), self.nameApp_entry.get(), self.color_entry.get()))
-        self.buttonAppClass.grid(column=0, row=1)
-        
-        self.x_entry = tk.Entry(self.testScreen, width=20)
+        self.x_entry = tk.Entry(root)
         self.x_entry.grid(column=1, row=0)
 
-        self.y_entry = tk.Entry(self.testScreen, width=20)
-        self.y_entry.grid(column=2, row=0)
+        self.y_entry = tk.Entry(root, width=20)
+        self.y_entry.grid(columr=2, row=0)
 
-        self.name_entry = tk.Entry(self.testScreen, width=20)
+        self.name_entry = tk.Entry(root, width=20)
         self.name_entry.grid(column=3, row=0)
 
-        self.description_entry = tk.Entry(self.testScreen, width=20)
+        self.description_entry = tk.Entry(root, width=20)
         self.description_entry.grid(column=4,row=0)
         
-        self.time_entry = tk.Entry(self.testScreen, width=20)
+        self.time_entry = tk.Entry(root, width=20)
         self.time_entry.grid(column=5, row=0)
 
-        self.cost_entry = tk.Entry(self.testScreen, width=20)
-        self.cost_entry.grid(column=6, row=0)
-
-        self.title_entry = tk.Entry(self.testScreen, width=20)
-        self.title_entry.grid(column=1, row=1)
         
-        self.nameApp_entry = tk.Entry(self.testScreen, width=20)
-        self.nameApp_entry.grid(column=2, row=1)
-
-        self.color_entry = tk.Entry(self.testScreen, width=20)
-        self.color_entry.grid(column=3, row=1)
-
-
+        self.buttonAppClass = Button(self.testScreen, text="App Class  ")
+        self.buttonAppClass.grid(column=0, row=1)
+        
         self.testScreen.mainloop()
-
-    def nodePush(self, x, y, name, description, time, cost):
-        print("Testing node class")
-        sampleScreen = tk.Tk()
-        sampleScreen.size()
-        sampleScreen.geometry('1000x1000')
-        self.canvas = tk.Canvas(sampleScreen, width=600, height=400, bg="white")
-        test = Node(self.canvas, x, y, name, description, time, cost)
-
-    def appPush(self, title, name, color):
-        print("testing app class")
-        sampleScreen = tk.Tk()
-        sampleScreen.size()
-        sampleScreen.geometry('1000x1000')
-        test = App(sampleScreen, name, color)
-        sampleScreen.mainloop()
 
 
 x = homePage()

@@ -105,12 +105,13 @@ class Node:#Characteristics of nodes on the canvas
         self.canvas = canvas
         self.x = int(x)
         self.y = int(y)
-        self.id = canvas.create_oval(x-50, y-50, x+50, y+50, fill="white", outline="black", tags="node")
+        self.id = canvas.create_oval(x-50, y-50, x+50, y+50, fill="white", outline="black", tags="node" + str(self.node_counter))
         self.name = name
         self.description = description
         self.time = time
         self.cost = cost
         self.text_id = canvas.create_text(x, y, text=name, tags="node_text")
+        Node.node_counter += 1
 
         self.canvas.tag_bind(self.id, "<ButtonPress-1>", self.start_drag)
         self.canvas.tag_bind(self.id, "<B1-Motion>", self.drag)
@@ -257,6 +258,7 @@ class App:#Second interface between user and GUI
 
     def display_details(self, node):
         nodeName = tk.Label(root, text="Node name: " + node.name)
+        nodeName.config(text="Node name: " + node.name)
         nodeName.place(x=(root.winfo_width()/2.5), y=(self.detailsLabel.winfo_y() + self.detailsLabel.winfo_height() + 5))
         root.update()
 
@@ -271,7 +273,7 @@ class App:#Second interface between user and GUI
         nodeCost = tk.Label(root, text="Cost: " + node.cost)
         nodeCost.place(x=(root.winfo_width()/2.5), y=(nodeTime.winfo_y() + nodeTime.winfo_height() + 5))
         root.update()
-        
+
 class Driver:#Testing the individual classes.
     def __init__(self):
         print("Start Driver Class")
