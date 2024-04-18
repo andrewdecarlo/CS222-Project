@@ -249,7 +249,7 @@ class App:#Second interface between user and GUI
             self.canvas.delete(closest)
             self.lines.remove(closest)
 
-        if "node" in self.canvas.gettags(closest):#Removes a node
+        if self.canvas.gettags(closest)[0] in self.nodes.keys():#Removes a node
             self.canvas.delete(closest)
             del self.nodes[self.canvas.gettags(closest)[0]]
 
