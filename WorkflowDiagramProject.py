@@ -74,6 +74,7 @@ def homePage():#Starting GUI for the user.
                 list.append(color)
                 root.destroy()
         else:
+            #Change input fields to red background if empty
             if not title:
                 titleInput.configure(bg="red")
             else:
@@ -98,6 +99,7 @@ def homePage():#Starting GUI for the user.
 
 
 class Node:#Characteristics of nodes on the canvas
+    node_counter = 0
     def __init__(self, canvas, x, y, name, description, time, cost):
         #Sets charecteristics of the node on the Canvas
         self.canvas = canvas
@@ -139,7 +141,7 @@ class App:#Second interface between user and GUI
         self.canvas = tk.Canvas(root, width=600, height=400, bg=color)#Canvas for the nodes
         self.canvas.pack()
 
-        self.nodes = []
+        self.nodes = {}
         self.lines = []
         self.start_node = None
         self.end_node = None
@@ -182,6 +184,13 @@ class App:#Second interface between user and GUI
         window_height = nameLabel.winfo_y() + descLabel.winfo_reqheight() + timeLabel.winfo_reqheight() + costLabel.winfo_reqheight() + self.add_node_button.winfo_reqheight() + 50
         root.geometry(f"600x{window_height}")
 
+        #Node details display
+        self.detailsLabel = tk.Label(root, text="Node details:")
+        self.detailsLabel.place(x=(root.winfo_width()/2.5), y=410)
+        
+        root.update()
+
+        #Button bindings
         self.canvas.bind("<Button-1>", self.click_node)
         self.canvas.bind("<Button-3>", self.delete_object)
         self.name_entry.bind("<Return>", lambda event: self.add_node)
@@ -198,7 +207,8 @@ class App:#Second interface between user and GUI
             time = self.time_entry.get()
             cost = self.cost_entry.get()
             node = Node(self.canvas, 100, 100, name, description, time, cost)
-            self.nodes.append(node)
+            self.nodes[self.canvas.gettags(node.id)[0]] = node
+            
 
             # Clear entry fields
             self.name_entry.delete(0, tk.END)
@@ -210,7 +220,10 @@ class App:#Second interface between user and GUI
 
     def click_node(self, event):#Checks if a ndoe has been clicked
         closest = self.canvas.find_closest(event.x, event.y)
-        if "node" in self.canvas.gettags(closest):
+        tag = self.canvas.gettags(closest)[0]     
+        if self.nodes.get(tag) is not None:
+            node = self.nodes[tag]
+            self.display_details(node)
             if self.start_node is None:
                 self.start_node = closest
             else:
@@ -237,7 +250,7 @@ class App:#Second interface between user and GUI
 
         if "node" in self.canvas.gettags(closest):#Removes a node
             self.canvas.delete(closest)
-            self.nodes.remove(closest)
+            del self.nodes[self.canvas.gettags(closest)[0]]
 
         if "node_text" in self.canvas.gettags(closest):#Removes a text
             self.canvas.delete(closest)
