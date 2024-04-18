@@ -218,7 +218,7 @@ class App:#Second interface between user and GUI
         else:
             print("System Empty Field Error")
 
-    def click_node(self, event):#Checks if a ndoe has been clicked
+    def click_node(self, event):#Checks if a node has been clicked
         closest = self.canvas.find_closest(event.x, event.y)
         tag = self.canvas.gettags(closest)[0]     
         if self.nodes.get(tag) is not None:
@@ -255,6 +255,23 @@ class App:#Second interface between user and GUI
         if "node_text" in self.canvas.gettags(closest):#Removes a text
             self.canvas.delete(closest)
 
+    def display_details(self, node):
+        nodeName = tk.Label(root, text="Node name: " + node.name)
+        nodeName.place(x=(root.winfo_width()/2.5), y=(self.detailsLabel.winfo_y() + self.detailsLabel.winfo_height() + 5))
+        root.update()
+
+        nodeDescription = tk.Label(root, text="Description: " + node.description)
+        nodeDescription.place(x=(root.winfo_width()/2.5), y=(nodeName.winfo_y() + nodeName.winfo_height() + 5))
+        root.update()
+
+        nodeTime = tk.Label(root, text="Time: " + node.time)
+        nodeTime.place(x=(root.winfo_width()/2.5), y=(nodeDescription.winfo_y() + nodeDescription.winfo_height() + 5))
+        root.update()
+
+        nodeCost = tk.Label(root, text="Cost: " + node.cost)
+        nodeCost.place(x=(root.winfo_width()/2.5), y=(nodeTime.winfo_y() + nodeTime.winfo_height() + 5))
+        root.update()
+        
 class Driver:#Testing the individual classes.
     def __init__(self):
         print("Start Driver Class")
