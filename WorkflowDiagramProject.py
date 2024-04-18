@@ -70,6 +70,7 @@ def homePage():
                 list.append(color)
                 root.destroy()
         else:
+            #Change input fields to red background if empty
             if not title:
                 titleInput.configure(bg="red")
             else:
@@ -94,11 +95,12 @@ def homePage():
 
 
 class Node:
+    node_counter = 0
     def __init__(self, canvas, x, y, name, description, time, cost):
         self.canvas = canvas
         self.x = x
         self.y = y
-        self.id = canvas.create_oval(x-50, y-50, x+50, y+50, fill="white", outline="black", tags="node")
+        self.id = canvas.create_oval(x-50, y-50, x+50, y+50, fill="white", outline="black", tags="node" + str(self.node_counter))
         self.name = name
         self.description = description
         self.time = time
@@ -134,7 +136,7 @@ class App:
         self.canvas = tk.Canvas(root, width=600, height=400, bg=color)
         self.canvas.pack()
 
-        self.nodes = []
+        self.nodes = {}
         self.lines = []
         self.start_node = None
         self.end_node = None
@@ -177,15 +179,18 @@ class App:
         window_height = nameLabel.winfo_y() + descLabel.winfo_reqheight() + timeLabel.winfo_reqheight() + costLabel.winfo_reqheight() + self.add_node_button.winfo_reqheight() + 50
         root.geometry(f"600x{window_height}")
 
+        #Node details display
+        self.detailsLabel = tk.Label(root, text="Node details:")
+        self.detailsLabel.place(x=(root.winfo_width()/2.5), y=410)
+        
+        root.update()
+
+        #Button bindings
         self.canvas.bind("<Button-1>", self.click_node)
         self.canvas.bind("<Button-3>", self.delete_object)
         self.name_entry.bind("<Return>", lambda event: self.add_node)
 
         
-        
-   
-    
-
     def add_node(self):
         if(self.time_entry.get() != "" and self.name_entry.get() != "" and self.cost_entry.get() != "" and  self.description_entry.get() != ""):
             name = self.name_entry.get()
@@ -193,7 +198,8 @@ class App:
             time = self.time_entry.get()
             cost = self.cost_entry.get()
             node = Node(self.canvas, 100, 100, name, description, time, cost)
-            self.nodes.append(node)
+            self.nodes[self.canvas.gettags(node.id)[0]] = node
+            
 
             # Clear entry fields
             self.name_entry.delete(0, tk.END)
@@ -205,7 +211,10 @@ class App:
 
     def click_node(self, event):
         closest = self.canvas.find_closest(event.x, event.y)
-        if "node" in self.canvas.gettags(closest):
+        tag = self.canvas.gettags(closest)[0]     
+        if self.nodes.get(tag) is not None:
+            node = self.nodes[tag]
+            self.display_details(node)
             if self.start_node is None:
                 self.start_node = closest
             else:
@@ -236,6 +245,23 @@ class App:
 
         if "node_text" in self.canvas.gettags(closest):
             self.canvas.delete(closest)
+    
+    def display_details(self, node):
+        nodeName = tk.Label(root, text="Node name: " + node.name)
+        nodeName.place(x=(root.winfo_width()/2.5), y=(self.detailsLabel.winfo_y() + self.detailsLabel.winfo_height() + 5))
+        root.update()
+
+        nodeDescription = tk.Label(root, text="Description: " + node.description)
+        nodeDescription.place(x=(root.winfo_width()/2.5), y=(nodeName.winfo_y() + nodeName.winfo_height() + 5))
+        root.update()
+
+        nodeTime = tk.Label(root, text="Time: " + node.time)
+        nodeTime.place(x=(root.winfo_width()/2.5), y=(nodeDescription.winfo_y() + nodeDescription.winfo_height() + 5))
+        root.update()
+
+        nodeCost = tk.Label(root, text="Cost: " + node.cost)
+        nodeCost.place(x=(root.winfo_width()/2.5), y=(nodeTime.winfo_y() + nodeTime.winfo_height() + 5))
+        root.update()
 
 class Driver:
     def __init__(self):
