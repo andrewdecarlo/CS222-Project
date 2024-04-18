@@ -239,9 +239,10 @@ class App:
             self.canvas.delete(closest)
             self.lines.remove(closest)
 
-        if "node" in self.canvas.gettags(closest):
+        if self.nodes.get(self.canvas.gettags(closest)[0]):
+            print("here")
             self.canvas.delete(closest)
-            self.nodes.remove(closest)
+            del self.nodes[self.canvas.gettags(closest)[0]]
 
         if "node_text" in self.canvas.gettags(closest):
             self.canvas.delete(closest)
