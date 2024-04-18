@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import *
 
-def homePage():
+def homePage():#Starting GUI for the user.
     entryData = []
    
     root = tk.Tk()
@@ -21,12 +21,13 @@ def homePage():
     titleLabel.config(fg="white")
     titleInput = tk.Entry(root)
     
-
+    #Author label information
     authorLabel = tk.Label(root, text="Author name: ")
     authorLabel.config(bg="black")
     authorLabel.config(fg="white")
     authorInput = tk.Entry(root)
     
+    #Color drop down label
     colorLabel = tk.Label(root, text="Color Theme")
     colorLabel.config(bg="black")
     colorLabel.config(fg="white")
@@ -35,12 +36,14 @@ def homePage():
     options = ["White", "Black", "Red", "Green", "Blue"]
     colorInput = tk.OptionMenu(root, colorSelection, *options)
 
+    #Buttons for starting the app class and driver
     createButton = tk.Button(root, text="Create", command= lambda: getEntryFields(root,titleInput.get(),authorInput.get(),entryData, colorSelection.get()))
     driverButton = tk.Button(root, text="Driver", command= lambda: Driver())
 
     whitespace = tk.Label(root, text="")
     whitespace.config(bg="black")
 
+    #Assigning positions on the screen for the buttons, labels, and inputs
     newProjectLabel.grid(row=1, column=0, pady=5)
     titleLabel.grid(row=2, column=0)
     titleInput.grid(row=2, column=1)
@@ -52,7 +55,7 @@ def homePage():
     driverButton.grid(row=5, column=1, pady=5)
     whitespace.grid(row=6, column=0)
 
-
+    #Not used
     openExistingLabel = tk.Label(root, text="Open Existing Proejct")
     openExistingLabel.config(bg="black")
     openExistingLabel.config(fg="white")
@@ -62,7 +65,8 @@ def homePage():
     openButton.grid(row=6, column=1, pady=10)
 
     def getEntryFields(root, title, author, list, color):
-    
+        
+        #Checks for all entry fields are completed.
         if(title != "" and author != "" and color != ""):
                 list.clear()
                 list.append(title)
@@ -93,11 +97,12 @@ def homePage():
 
 
 
-class Node:
+class Node:#Characteristics of nodes on the canvas
     def __init__(self, canvas, x, y, name, description, time, cost):
+        #Sets charecteristics of the node on the Canvas
         self.canvas = canvas
-        self.x = x
-        self.y = y
+        self.x = int(x)
+        self.y = int(y)
         self.id = canvas.create_oval(x-50, y-50, x+50, y+50, fill="white", outline="black", tags="node")
         self.name = name
         self.description = description
@@ -108,12 +113,12 @@ class Node:
         self.canvas.tag_bind(self.id, "<ButtonPress-1>", self.start_drag)
         self.canvas.tag_bind(self.id, "<B1-Motion>", self.drag)
         self.canvas.tag_bind(self.id, "<ButtonRelease-1>", self.end_drag)
+        print("Run Sucess")
 
-
-    def start_drag(self, event):
+    def start_drag(self, event):#Starts drag data
         self.drag_data = {'x': event.x, 'y': event.y}
 
-    def drag(self, event):
+    def drag(self, event):#updates from drag data
         delta_x = event.x - self.drag_data['x']
         delta_y = event.y - self.drag_data['y']
         self.canvas.move(self.id, delta_x, delta_y)
@@ -122,16 +127,16 @@ class Node:
         self.y += delta_y
         self.drag_data = {'x': event.x, 'y': event.y}
 
-    def end_drag(self, event):
+    def end_drag(self, event):#terminates the drag 
         self.drag_data = None
 
-class App:
+class App:#Second interface between user and GUI
     def __init__(self, root, title, name, color):
         self.root = root
         self.root.title(title)
         self.author = name
 
-        self.canvas = tk.Canvas(root, width=600, height=400, bg=color)
+        self.canvas = tk.Canvas(root, width=600, height=400, bg=color)#Canvas for the nodes
         self.canvas.pack()
 
         self.nodes = []
@@ -171,7 +176,7 @@ class App:
         self.cost_entry.place(x=(costLabel.winfo_x() + descLabel.winfo_width()), y=costLabel.winfo_y())
 
         # Buttons
-        self.add_node_button = tk.Button(root, text="Add Node", command=self.add_node)
+        self.add_node_button = tk.Button(root, text="Add Node", command=self.add_node)#Creates a new node
         self.add_node_button.place(x=75, y=(costLabel.winfo_y() + costLabel.winfo_height() + 5))
 
         window_height = nameLabel.winfo_y() + descLabel.winfo_reqheight() + timeLabel.winfo_reqheight() + costLabel.winfo_reqheight() + self.add_node_button.winfo_reqheight() + 50
@@ -186,7 +191,7 @@ class App:
    
     
 
-    def add_node(self):
+    def add_node(self):#Creates nodes based off of entry fields
         if(self.time_entry.get() != "" and self.name_entry.get() != "" and self.cost_entry.get() != "" and  self.description_entry.get() != ""):
             name = self.name_entry.get()
             description = self.description_entry.get()
@@ -203,7 +208,7 @@ class App:
         else:
             print("System Empty Field Error")
 
-    def click_node(self, event):
+    def click_node(self, event):#Checks if a ndoe has been clicked
         closest = self.canvas.find_closest(event.x, event.y)
         if "node" in self.canvas.gettags(closest):
             if self.start_node is None:
@@ -213,7 +218,7 @@ class App:
                     self.end_node = closest
                     self.draw_line()
 
-    def draw_line(self):
+    def draw_line(self):#connects line between the two nodes
         start_coords = self.canvas.coords(self.start_node)
         end_coords = self.canvas.coords(self.end_node)
         if start_coords[0] < end_coords[0]:
@@ -224,20 +229,20 @@ class App:
         self.start_node = None
         self.end_node = None
 
-    def delete_object(self, event):
+    def delete_object(self, event):#Removes any line, node, or titles
         closest = self.canvas.find_closest(event.x, event.y)
-        if "line" in self.canvas.gettags(closest):
+        if "line" in self.canvas.gettags(closest):#Removes a line
             self.canvas.delete(closest)
             self.lines.remove(closest)
 
-        if "node" in self.canvas.gettags(closest):
+        if "node" in self.canvas.gettags(closest):#Removes a node
             self.canvas.delete(closest)
             self.nodes.remove(closest)
 
-        if "node_text" in self.canvas.gettags(closest):
+        if "node_text" in self.canvas.gettags(closest):#Removes a text
             self.canvas.delete(closest)
 
-class Driver:
+class Driver:#Testing the individual classes.
     def __init__(self):
         print("Start Driver Class")
         print("Acess the information from the command prompt")
@@ -256,16 +261,17 @@ class Driver:
         self.buttonNodeClass.grid(column=0, row=0)
 
         #canvas, x, y, name, description, time, cost
-
         
         self.buttonAppClass = Button(self.testScreen, text="App Class  ", command= lambda: self.appPush(self.title_entry.get(), self.nameApp_entry.get(), self.color_entry.get()))
-        self.buttonAppClass.grid(column=0, row=1)
+        self.buttonAppClass.grid(column=0, row=2)
         
         self.x_entry = tk.Entry(self.testScreen, width=20)
         self.x_entry.grid(column=1, row=0)
 
         self.y_entry = tk.Entry(self.testScreen, width=20)
         self.y_entry.grid(column=2, row=0)
+        
+        
 
         self.name_entry = tk.Entry(self.testScreen, width=20)
         self.name_entry.grid(column=3, row=0)
@@ -280,13 +286,13 @@ class Driver:
         self.cost_entry.grid(column=6, row=0)
 
         self.title_entry = tk.Entry(self.testScreen, width=20)
-        self.title_entry.grid(column=1, row=1)
+        self.title_entry.grid(column=1, row=2)
         
         self.nameApp_entry = tk.Entry(self.testScreen, width=20)
-        self.nameApp_entry.grid(column=2, row=1)
+        self.nameApp_entry.grid(column=2, row=2)
 
         self.color_entry = tk.Entry(self.testScreen, width=20)
-        self.color_entry.grid(column=3, row=1)
+        self.color_entry.grid(column=3, row=2)
 
 
         self.testScreen.mainloop()
@@ -296,21 +302,22 @@ class Driver:
         sampleScreen = tk.Tk()
         sampleScreen.size()
         sampleScreen.geometry('1000x1000')
-        self.canvas = tk.Canvas(sampleScreen, width=600, height=400, bg="white")
-        test = Node(self.canvas, x, y, name, description, time, cost)
+        canvas = tk.Canvas(sampleScreen, width=600, height=400, bg="white")
+        canvas.pack()
+
+        test = Node(canvas, int(x), int(y), name, description, time, cost)
+        sampleScreen.mainloop()
 
     def appPush(self, title, name, color):
         print("testing app class")
         sampleScreen = tk.Tk()
-        sampleScreen.size()
-        sampleScreen.geometry('1000x1000')
-        test = App(sampleScreen, name, color)
-        sampleScreen.mainloop()
+        test = App(sampleScreen, title, name, color)
+        
 
 
-x = homePage()
+x = homePage()#initiates the homepage
 
 if len(x) > 2:
-    root = tk.Tk()
+    root = tk.Tk()#Starts the program
     app = App(root, x[0],x[1],x[2])
     root.mainloop()
